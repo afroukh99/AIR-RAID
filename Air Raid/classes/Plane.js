@@ -1,48 +1,28 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../index.js";
+import { Bullet } from "./Bullet.js";
 import { Shape } from "./Shape.js";
 
+let arrowClicked = false
 export class Plane extends Shape {
-    
+
     constructor(x, y, width, height, sprite, speed) {
         super(x, y, width, height, sprite, speed);
         this.xPosition = (CANVAS_WIDTH / 2) - (this.width / 2);
         this.yPosition = CANVAS_HEIGHT - this.height * 2;
     }
 
+
+
     /**
      * Draw the plane on the canvas.
      * @param {CanvasRenderingContext2D} ctx
      */
     draw(ctx) {
-        if (!this.sprite) {
-            console.error("Sprite is not defined for the plane.");
-            return;
-        }
-
-        if (this.sprite.complete) {
-            ctx.drawImage(
-                this.sprite,
-                this.xPosition,
-                this.yPosition,
-                this.width,
-                this.height
-            );
-        } else {
-            this.sprite.onload = () => {
-                ctx.drawImage(
-                    this.sprite,
-                    this.xPosition,
-                    this.yPosition,
-                    this.width,
-                    this.height
-                );
-            };
-        }
+        super.draw(ctx)
     }
 
+
     /**
-     *
-     *
      *
      * @param {CanvasRenderingContext2D} ctx
      */
@@ -50,10 +30,12 @@ export class Plane extends Shape {
         document.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "ArrowLeft":
+                    arrowClicked = true
                     this.xPosition -= this.speed;
-                    if (this.xPosition < 0) this.xPosition = 0;
+                    if (this.xPosition < 0) this.xPosition = 0
                     break;
                 case "ArrowRight":
+                    arrowClicked = true
                     this.xPosition += this.speed;
                     if (this.xPosition > CANVAS_WIDTH - this.width)
                         this.xPosition = CANVAS_WIDTH - this.width;
@@ -64,4 +46,19 @@ export class Plane extends Shape {
             this.draw(ctx);
         });
     }
+    /**
+     * 
+     * @param {CanvasRenderingContext2D} ctx 
+     */
+    shoot(ctx) {
+        document.addEventListener("keydown", e => {
+            if (e.key === " ") {
+                const bulletImgSrc = "./assets/images/bullet.png"  
+                const bullet = new Bullet((this.xPosition + (this.width / 2)), this.yPosition - 20, 20, 15,bulletImgSrc, 5)
+                bullet.fire(ctx)
+            }
+        })
+    }
+
+
 }

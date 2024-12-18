@@ -10,7 +10,9 @@ export const CANVAS_WIDTH = canvas.width = window.innerWidth;
 export const CANVAS_HEIGHT = canvas.height = window.innerHeight;
 
 
-
+canvas.style.backgroundImage = "url('./assets/images/back.png')";
+canvas.style.backgroundSize = "cover";
+canvas.style.backgroundRepeat = "no-repeat"; 
 
 
 const game = new Game()
